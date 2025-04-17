@@ -1,1 +1,0 @@
-from libformulaofpartnership import  domain
