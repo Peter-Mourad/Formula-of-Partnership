@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Register as a Partner</title>
+    <style>
+        /* Star Wars-themed styling */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #fff;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        form {
+            margin-top: 20px;
+            padding: 1rem;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-bottom: 2px solid #fff;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder {
+            color: #ccc;
+        }
+
+        button[type="button"] {
+            background-color: #ff9800;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="button"]:hover {
+            background-color: #ffbf00;
+        }
+        button[disabled] {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+        .dashboard-button {
+            background-color: #0074cc;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Register as a Partner</h1>
+        <p>Fill this form and we will contact you.</p>
+        <form id="registration-form">
+            <input type="text" name="first_name" placeholder="First Name" required><br>
+            <input type="text" name="last_name" placeholder="Last Name" required><br>
+            <input type="email" name="email" placeholder="Email" required><br>
+            <input type="text" name="business_name" placeholder="Business Name" required><br>
+            <button type="button" id="submit-button" onclick="submitForm()">Submit</button>
+            <a href="/demo_dashboard" class="dashboard-button">See a demo</a>
+
+            
+        </form>
+    </div>
+
+    <script>
+        function submitForm() {
+            const form = document.getElementById('registration-form');
+            const formData = new FormData(form);
+            const formObject = {};
+            const submitButton = document.getElementById('submit-button');
+            submitButton.disabled = true;
+
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            // Send the form data as JSON to the /register endpoint
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formObject)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Registration successful! We will contact you.');
+                        form.reset();
+                    } else {
+                        alert('Registration failed. Please try again later.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                }).finally(() => {
+                    submitButton.disabled = false;
+                });
+        }
+    </script>
+</body>
+
+</html>
